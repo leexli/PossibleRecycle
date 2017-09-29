@@ -1,100 +1,115 @@
 package possiblerecycle.leex.recycle.com.possiblerecycle.view.activity
 
 import android.os.Bundle
-import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import possiblerecycle.leex.recycle.com.possiblerecycle.R
+import possiblerecycle.leex.recycle.com.possiblerecycle.view.fragment.FirstFragment
+import possiblerecycle.leex.recycle.com.possiblerecycle.view.fragment.FirstFragment2
 
 
+class MainActivity : AppCompatActivity() , View.OnClickListener {
 
-class MainActivity : AppCompatActivity() {
+    var mViewPager: ViewPager? = null
+    var mTabView : LinearLayout? = null
 
-
-//    private var view1: View = View(this)
-    var tabLayout: TabLayout? = null
-    var viewPager: ViewPager? = null
+    var mTitleList: Array<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        StatusBarCompat.compat(this)
-//        tabLayout = findViewById(R.id.tabs) as TabLayout
-//        val linearLayout = tabLayout!!.getChildAt(0) as LinearLayout
-////        linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE)
-//        linearLayout.showDividers = (LinearLayout.SHOW_DIVIDER_BEGINNING)
-//        linearLayout.setDividerDrawable(ContextCompat.getDrawable(this, R.drawable.test))
-////        linearLayout.setDividerPadding(dip2px(50))
-//        viewPager = findViewById(R.id.vp_view) as ViewPager
-//
-////        var mTitleList: Array<String> = this.resources.getStringArray(R.array.home_activity_tablist)
-//        var mTitleList = ArrayList<String>()
-//        mTitleList.add("Taab 1")
-//        mTitleList.add("Tab 2")
-//
-//        var view1 : View = View.inflate(this , R.layout.home_bottom_item ,null)
-//        var view2 : View = View.inflate(this , R.layout.home_bottom_item ,null)
-//
-//        var image1 :ImageView = view1.findViewById(R.id.icon) as ImageView
-//        var text1 : TextView = view1.findViewById(R.id.title) as TextView
-//        image1.setImageResource(R.drawable.home_tab_home_normal)
-//        text1.setText(mTitleList.get(0))
-//
-//        var image2 :ImageView = view2.findViewById(R.id.icon) as ImageView
-//        var text2 : TextView = view2.findViewById(R.id.title) as TextView
-//        image2.setImageResource(R.drawable.home_tab_me_normal)
-//        text2.setText(mTitleList.get(1))
-////
-////        tabLayout!!.addTab(tabLayout!!.newTab().setCustomView(view1))
-////        tabLayout!!.addTab(tabLayout!!.newTab().setCustomView(view2))
-//
-////        tabLayout!!.getTabAt(0)!!.setCustomView(view1)
-////        tabLayout!!.getTabAt(1)!!.setText("Taab 2")
-////        tabLayout!!.getTabAt(1)!!.setCustomView(view2)
-////        tabLayout!!.newTab().setCustomView(view1))
-////        tabLayout!!.addTab(tabLayout!!.newTab().setIcon(R.mipmap.home_add_message).setText(mTitleList.get(1)),false)
-//
-//        val list = ArrayList<Fragment>()
-//        list.add(FirstFragment())
-//        list.add(FirstFragment2())
-////        tabLayout!!.tabMode = TabLayout.MODE_SCROLLABLE
-//
-//        viewPager!!.adapter = object : FragmentPagerAdapter(supportFragmentManager) {
-//            override fun getItem(position: Int): Fragment {
-//                return list[position]
-//            }
-//
-//            override fun getCount(): Int {
-//                return list.size
-//            }
-//
-//            override fun getPageTitle(position: Int): CharSequence {
-//                return mTitleList.get(position)
-//            }
-//
-//
-//        }
+        mTitleList = this.resources.getStringArray(R.array.home_activity_tablist)
+        mTabView = findViewById(R.id.tab_view) as LinearLayout
+        initTabViewBySelectId(mTabView , 0)
+        mViewPager = findViewById(R.id.vp_view) as ViewPager
+        val list = ArrayList<Fragment>()
+        list.add(FirstFragment())
+        list.add(FirstFragment2())
+        mViewPager!!.adapter = object : FragmentPagerAdapter(supportFragmentManager) {
+            override fun getItem(position: Int): Fragment {
+                return list[position]
+            }
+
+            override fun getCount(): Int {
+                return list.size
+            }
+
+            override fun getPageTitle(position: Int): CharSequence {
+                return mTitleList!!.get(position)
+            }
+
+
+        }
 //        tabLayout!!.setupWithViewPager(viewPager)
-//        viewPager!!.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-//            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-//
-//            override fun onPageSelected(position: Int) {
+        mViewPager!!.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+            override fun onPageSelected(position: Int) {
 //                Toast.makeText(this@MainActivity, "" + position, Toast.LENGTH_SHORT).show()
-//            }
-//
-//            override fun onPageScrollStateChanged(state: Int) {
-//
-//            }
-//        })
-//
+                initTabViewBySelectId(mTabView , position)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+        })
+
 //        tabLayout!!.getTabAt(0)!!.setIcon(R.drawable.home_tab_home_normal)
 //        tabLayout!!.getTabAt(1)!!.setIcon(R.drawable.home_tab_me_normal)
 
     }
 
+    fun initTabViewBySelectId(linearLayout: LinearLayout?,index : Int) {
+        var homeTabItem = linearLayout!!.findViewById(R.id.tab_home_item)
+        var meTabItem = linearLayout!!.findViewById(R.id.tab_me_item)
+        homeTabItem.setOnClickListener(this)
+        meTabItem.setOnClickListener(this)
+        if (index == 0) {
+            var icon: ImageView = homeTabItem.findViewById(R.id.tab_icon) as ImageView
+            icon.setImageResource(R.drawable.home_tab_home_selected)
+            var title: TextView = homeTabItem.findViewById(R.id.tab_title) as TextView
+            title.text = mTitleList!![0]
+
+            icon = meTabItem.findViewById(R.id.tab_icon) as ImageView
+            icon.setImageResource(R.drawable.home_tab_me_normal)
+            title = meTabItem.findViewById(R.id.tab_title) as TextView
+            title.text = mTitleList!![1]
+        } else {
+            var icon: ImageView = homeTabItem.findViewById(R.id.tab_icon) as ImageView
+            icon.setImageResource(R.drawable.home_tab_home_normal)
+            var title: TextView = homeTabItem.findViewById(R.id.tab_title) as TextView
+            title.text = mTitleList!![0]
+
+            icon = meTabItem.findViewById(R.id.tab_icon) as ImageView
+            icon.setImageResource(R.drawable.home_tab_me_selected)
+            title = meTabItem.findViewById(R.id.tab_title) as TextView
+            title.text = mTitleList!![1]
+        }
+    }
+
     fun dip2px(dip: Int): Int {
         val density = resources.displayMetrics.density
         return (dip * density + 0.5).toInt()
+    }
+
+    override fun onClick(p0: View?) {
+        when(p0?.id){
+            R.id.tab_home_item -> {
+                initTabViewBySelectId(mTabView , 0)
+                mViewPager!!.currentItem = 0
+            }
+            R.id.tab_me_item -> {
+                initTabViewBySelectId(mTabView , 1)
+                mViewPager!!.currentItem = 1
+            }
+
+        }
     }
 }

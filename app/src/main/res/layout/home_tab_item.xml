@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="2dp"
+    android:paddingTop="3dp"
     >
 
     <ImageView
         android:id="@+id/tab_icon"
-        android:layout_width="27dp"
+        android:layout_width="25dp"
         android:layout_height="27dp"
         android:layout_centerHorizontal="true"
         android:src="@drawable/home_tab_me_selected"/>
@@ -18,15 +18,17 @@
         android:layout_height="10dp"
         android:background="@drawable/red_point_bg"
         android:layout_alignEnd="@id/tab_icon"
-        android:layout_alignTop="@id/tab_icon"/>
+        android:layout_alignTop="@id/tab_icon"
+        android:visibility="invisible"/>
 
 
    <TextView
        android:id="@+id/tab_title"
        android:layout_below="@id/tab_icon"
-       android:textSize="@dimen/text_size_S"
+       android:textSize="@dimen/text_size_T"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_centerHorizontal="true"
+       android:textColorHighlight="@color/black"
        android:text="tffff"/>
 </RelativeLayout>
